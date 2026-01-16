@@ -1,0 +1,33 @@
+# Unsloth and Core Training Dependencies
+unsloth
+transformers>=4.40.0
+datasets
+peft
+torch>=2.1.0
+accelerate
+bitsandbytes
+trl<0.9.0
+xformers<0.0.27
+
+# Synthetic Data Generation
+openai>=1.0.0
+anthropic>=0.18.0
+
+# Data Processing & Validation
+pandas>=2.0.0
+jsonlines
+numpy
+
+# Web Scraping (Optional for curating data)
+beautifulsoup4
+requests
+lxml
+
+# Jupyter Notebook Support
+jupyter
+ipywidgets
+notebook
+
+# Utilities
+tqdm
+python-dotenv
