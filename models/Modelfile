@@ -13,7 +13,7 @@
 # Import the GGUF model
 # Use Q5_K_M for best balance of quality and speed
 # Change to Q4_K_M for faster inference or Q8_0 for highest quality
-FROM ./gguf/unsloth.Q5_K_M.gguf
+FROM ./gguf/Llama-3.1-8B-Instruct.Q4_K_M.gguf
 
 # Llama 3 Chat Template
 TEMPLATE """{{ if .System }}<|begin_of_text|><|start_header_id|>system<|end_header_id|>

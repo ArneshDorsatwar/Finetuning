@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "Bash(powershell -Command:*)",
+      "Bash(ping:*)",
+      "Bash(tasklist:*)",
+      "Bash(ls:*)",
+      "Bash(wmic process where \"name=''python.exe''\" get commandline)",
+      "Bash(findstr:*)",
+      "Bash(timeout 30 tail:*)"
+    ]
+  }
+}

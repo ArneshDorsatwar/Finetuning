@@ -29,10 +29,10 @@ def load_dataset(file_path: str) -> List[Dict]:
             data = json.load(f)
         return data
     except json.JSONDecodeError as e:
-        print(f"❌ JSON Decode Error: {e}")
+        print(f"[ERROR] JSON Decode Error: {e}")
         return []
     except FileNotFoundError:
-        print(f"❌ File not found: {file_path}")
+        print(f"[ERROR] File not found: {file_path}")
         return []
 
 
@@ -186,11 +186,11 @@ def print_sample(data: List[Dict], count: int = 3):
             text = msg.get("value", "")
 
             if role == "human":
-                print(f"\n👤 HUMAN:\n{text[:300]}{'...' if len(text) > 300 else ''}")
+                print(f"\n[USER] HUMAN:\n{text[:300]}{'...' if len(text) > 300 else ''}")
             elif role == "gpt":
-                print(f"\n🤖 ASSISTANT:\n{text[:500]}{'...' if len(text) > 500 else ''}")
+                print(f"\n[ASSISTANT] ASSISTANT:\n{text[:500]}{'...' if len(text) > 500 else ''}")
             elif role == "system":
-                print(f"\n⚙️  SYSTEM:\n{text[:200]}{'...' if len(text) > 200 else ''}")
+                print(f"\n[SYSTEM]  SYSTEM:\n{text[:200]}{'...' if len(text) > 200 else ''}")
 
         print("\n" + "=" * 80 + "\n")
 
@@ -211,7 +211,7 @@ def main():
 
     # Check if file exists
     if not os.path.exists(args.file):
-        print(f"\n❌ ERROR: File not found: {args.file}")
+        print(f"\n[ERROR] ERROR: File not found: {args.file}")
         return
 
     # Load dataset
@@ -219,10 +219,10 @@ def main():
     data = load_dataset(args.file)
 
     if not data:
-        print(f"\n❌ ERROR: Could not load dataset or dataset is empty")
+        print(f"\n[ERROR] ERROR: Could not load dataset or dataset is empty")
         return
 
-    print(f"✓ Loaded {len(data)} examples\n")
+    print(f"[OK] Loaded {len(data)} examples\n")
 
     # Validate structure
     print(f"{'='*80}")
@@ -232,9 +232,9 @@ def main():
     is_valid, errors = validate_structure(data)
 
     if is_valid:
-        print(f"✅ Dataset structure is valid!")
+        print(f"[OK] Dataset structure is valid!")
     else:
-        print(f"❌ Found {len(errors)} structural errors:\n")
+        print(f"[ERROR] Found {len(errors)} structural errors:\n")
         for error in errors[:20]:  # Show first 20 errors
             print(f"  • {error}")
         if len(errors) > 20:
@@ -278,11 +278,11 @@ def main():
         if warnings:
             print(f"Found {len(warnings)} potential quality issues:\n")
             for warning in warnings[:30]:  # Show first 30 warnings
-                print(f"  ⚠️  {warning}")
+                print(f"  [WARN]  {warning}")
             if len(warnings) > 30:
                 print(f"  ... and {len(warnings) - 30} more warnings")
         else:
-            print(f"✅ No quality issues detected!")
+            print(f"[OK] No quality issues detected!")
 
     # Show samples
     if args.sample > 0:
@@ -294,14 +294,14 @@ def main():
     print(f"{'='*80}\n")
 
     if is_valid:
-        print(f"✅ Dataset is ready for training!")
+        print(f"[OK] Dataset is ready for training!")
         print(f"\nRecommended next steps:")
         print(f"1. Review sample conversations: --sample 5")
         print(f"2. Check for quality warnings: --warnings")
         print(f"3. Merge with other topic datasets if needed")
         print(f"4. Use for fine-tuning in your training notebook")
     else:
-        print(f"❌ Please fix structural errors before training")
+        print(f"[ERROR] Please fix structural errors before training")
 
     print(f"\n{'='*80}\n")
 
