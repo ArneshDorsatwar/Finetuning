@@ -8,7 +8,9 @@
       "Bash(ls:*)",
       "Bash(wmic process where \"name=''python.exe''\" get commandline)",
       "Bash(findstr:*)",
-      "Bash(timeout 30 tail:*)"
+      "Bash(timeout 30 tail:*)",
+      "Bash(timeout /t 30 /nobreak)",
+      "Bash(timeout 60 tail:*)"
     ]
   }
 }
