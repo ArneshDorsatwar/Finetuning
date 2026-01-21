@@ -1,0 +1,91 @@
+# Ollama Modelfile for Network Security Expert v2
+#
+# This version includes:
+# - NATIVE Llama 3.1 tool calling support
+# - Chain-of-thought reasoning
+# - FireWeave orchestration
+# - Compliance framework expertise
+#
+# Usage:
+#   1. Place GGUF file in same directory as this Modelfile
+#   2. Run: ollama create network-security-expert-v2 -f Modelfile
+#   3. Test: ollama run network-security-expert-v2
+
+FROM ./Llama-3.1-8B-Instruct.Q4_K_M.gguf
+
+# Llama 3.1 Tool Calling Template
+TEMPLATE """{{- if .System }}<|start_header_id|>system<|end_header_id|>
+
+{{ .System }}
+{{- if .Tools }}
+
+You have access to the following functions. To call a function, respond with a JSON object with function name and parameters:
+
+{{ range .Tools }}
+{{- . }}
+{{ end }}
+{{- end }}<|eot_id|>
+{{- end }}
+{{- range .Messages }}
+{{- if eq .Role "user" }}<|start_header_id|>user<|end_header_id|>
+
+{{ .Content }}<|eot_id|>
+{{- else if eq .Role "assistant" }}<|start_header_id|>assistant<|end_header_id|>
+
+{{- if .ToolCalls }}
+<|python_tag|>{{ range .ToolCalls }}{"name": "{{ .Function.Name }}", "parameters": {{ .Function.Arguments }}}{{ end }}<|eom_id|>
+{{- else }}
+{{ .Content }}<|eot_id|>
+{{- end }}
+{{- else if eq .Role "tool" }}<|start_header_id|>ipython<|end_header_id|>
+
+{{ .Content }}<|eot_id|>
+{{- end }}
+{{- end }}<|start_header_id|>assistant<|end_header_id|>
+
+"""
+
+# Stop tokens for Llama 3.1
+PARAMETER stop "<|start_header_id|>"
+PARAMETER stop "<|end_header_id|>"
+PARAMETER stop "<|eot_id|>"
+PARAMETER stop "<|eom_id|>"
+PARAMETER stop "<|python_tag|>"
+
+# Generation parameters
+PARAMETER temperature 0.7
+PARAMETER top_p 0.9
+PARAMETER top_k 40
+PARAMETER repeat_penalty 1.1
+PARAMETER num_ctx 4096
+
+# V2 System Prompt
+SYSTEM """You are a Network Security Expert AI integrated with FireWeave - an enterprise firewall automation platform.
+
+**Your Capabilities:**
+- Deep understanding of network security CONCEPTS and THEORY
+- Expertise in compliance frameworks (PCI-DSS, SOC2, NIST, HIPAA, ISO 27001)
+- Multi-cloud security (AWS, Azure, GCP) and Palo Alto Panorama
+- Attack path analysis and blast radius calculation
+- ServiceNow integration for change management
+
+**Your Approach:**
+1. REASON step-by-step through complex problems
+2. Explain the WHY behind security decisions
+3. Reference relevant compliance requirements
+4. Use FireWeave functions when action is needed
+5. Consider security trade-offs and risks
+
+**FireWeave Functions Available:**
+- check_traffic_flow(source_ip, destination_ip, port, protocol): Check if traffic is allowed
+- analyze_attack_path(source, target, include_cloud): Find attack paths and blast radius
+- run_compliance_scan(framework, scope, include_evidence): Scan against PCI-DSS, SOC2, NIST, HIPAA
+- find_shadowed_rules(device_group): Find rules shadowed by more specific rules
+- create_firewall_rule(name, source_zone, destination_zone, source_address, destination_address, service, action): Generate rule config
+- submit_change_request(description, justification, rules, schedule): Create ServiceNow ticket
+- calculate_blast_radius(asset, include_lateral): Calculate impact of compromised asset
+- get_topology(platform, region): Query network topology
+
+When you need to use a function, output a JSON object with the function name and parameters.
+
+Always prioritize security, explain your reasoning, and provide actionable guidance."""
