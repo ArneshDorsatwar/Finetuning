@@ -248,6 +248,386 @@ FIREWEAVE_TOOLS = [
                 "required": ["asset"]
             }
         }
+    },
+
+    # =============================================================================
+    # NEW FIREWEAVE TOOLS - Comprehensive Coverage (16 Tools)
+    # =============================================================================
+
+    {
+        "type": "function",
+        "function": {
+            "name": "get_template_stacks",
+            "description": "List all Panorama template stacks with their assigned firewalls and template hierarchy.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "include_templates": {
+                        "type": "boolean",
+                        "description": "Include individual templates in the hierarchy (default: true)"
+                    }
+                },
+                "required": []
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_template_stack_hierarchy",
+            "description": "Show the template inheritance chain for a specific template stack, including priority order and which templates are applied.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "Template stack name (e.g., 'DC-Template-Stack', 'Branch-Template')"
+                    }
+                },
+                "required": ["name"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "find_template_overrides",
+            "description": "Detect configuration overrides in template stacks with severity classification (CRITICAL, WARNING, INFO).",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "severity": {
+                        "type": "string",
+                        "enum": ["critical", "warning", "info", "all"],
+                        "description": "Filter by severity level (default: all)"
+                    },
+                    "category": {
+                        "type": "string",
+                        "enum": ["security", "network", "system", "all"],
+                        "description": "Filter by override category (default: all)"
+                    }
+                },
+                "required": []
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_device_group_hierarchy",
+            "description": "Show the complete device group tree with object counts (local vs inherited) and inheritance relationships.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "show_object_counts": {
+                        "type": "boolean",
+                        "description": "Include object count statistics (default: true)"
+                    }
+                },
+                "required": []
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_inheritance_chain",
+            "description": "Show the parent chain for a device group, from the specified DG up to Shared.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "device_group": {
+                        "type": "string",
+                        "description": "Device group name (e.g., 'DG-Production', 'DG-DMZ')"
+                    }
+                },
+                "required": ["device_group"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "sync_audit_logs",
+            "description": "Trigger audit log sync from Panorama API (config, audit, and system logs).",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "panorama_id": {
+                        "type": "string",
+                        "description": "Panorama identifier (default: primary)"
+                    },
+                    "log_types": {
+                        "type": "array",
+                        "items": {"type": "string", "enum": ["config", "audit", "system"]},
+                        "description": "Log types to sync (default: all)"
+                    }
+                },
+                "required": []
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "search_audit_logs",
+            "description": "Search audit logs with filters for user, action, entity type, and time range.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "user": {
+                        "type": "string",
+                        "description": "Filter by username (e.g., 'john.doe')"
+                    },
+                    "action": {
+                        "type": "string",
+                        "enum": ["create", "modify", "delete", "commit", "login", "all"],
+                        "description": "Filter by action type"
+                    },
+                    "entity_type": {
+                        "type": "string",
+                        "enum": ["rule", "object", "device-group", "template", "all"],
+                        "description": "Filter by entity type"
+                    },
+                    "days": {
+                        "type": "integer",
+                        "description": "Search last N days (default: 7)"
+                    }
+                },
+                "required": []
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_audit_log_diff",
+            "description": "View before/after changes for a specific audit log entry with field-level diffs.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "description": "Audit log entry ID"
+                    }
+                },
+                "required": ["id"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_vpn_templates",
+            "description": "List available VPN configuration templates (IKEv1, IKEv2) with recommended crypto profiles.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "vpn_type": {
+                        "type": "string",
+                        "enum": ["ikev1", "ikev2", "all"],
+                        "description": "Filter by VPN type (default: all)"
+                    }
+                },
+                "required": []
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "create_vpn_wizard",
+            "description": "Run the 7-step VPN wizard to create a complete site-to-site VPN configuration (tunnel interface, crypto profiles, routes, security policies).",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string",
+                        "enum": ["ikev1", "ikev2"],
+                        "description": "VPN type (IKEv1 or IKEv2)"
+                    },
+                    "local_site": {
+                        "type": "string",
+                        "description": "Local site name (e.g., 'HQ', 'Datacenter-1')"
+                    },
+                    "remote_site": {
+                        "type": "string",
+                        "description": "Remote site name (e.g., 'Branch-Office', 'DR-Site')"
+                    },
+                    "peer_ip": {
+                        "type": "string",
+                        "description": "Remote peer IP address"
+                    },
+                    "preshared_key": {
+                        "type": "string",
+                        "description": "Pre-shared key for authentication"
+                    },
+                    "local_network": {
+                        "type": "string",
+                        "description": "Local network CIDR (e.g., '10.1.0.0/16')"
+                    },
+                    "remote_network": {
+                        "type": "string",
+                        "description": "Remote network CIDR (e.g., '10.50.0.0/16')"
+                    }
+                },
+                "required": ["type", "local_site", "remote_site", "peer_ip", "preshared_key", "local_network", "remote_network"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "create_ike_profile",
+            "description": "Create an IKE Phase 1 crypto profile with encryption, hash, DH group, and lifetime settings.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "IKE profile name (e.g., 'IKE-AES256-SHA256-DH14')"
+                    },
+                    "encryption": {
+                        "type": "string",
+                        "enum": ["aes-128-cbc", "aes-192-cbc", "aes-256-cbc", "aes-128-gcm", "aes-256-gcm"],
+                        "description": "Encryption algorithm"
+                    },
+                    "hash": {
+                        "type": "string",
+                        "enum": ["sha1", "sha256", "sha384", "sha512"],
+                        "description": "Hash algorithm"
+                    },
+                    "dh_group": {
+                        "type": "integer",
+                        "enum": [2, 5, 14, 19, 20],
+                        "description": "Diffie-Hellman group"
+                    },
+                    "lifetime": {
+                        "type": "integer",
+                        "description": "IKE SA lifetime in hours (default: 8)"
+                    }
+                },
+                "required": ["name", "encryption", "hash", "dh_group"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "create_ipsec_profile",
+            "description": "Create an IPsec Phase 2 crypto profile with encryption, DH group, and lifetime settings.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string",
+                        "description": "IPsec profile name (e.g., 'IPsec-AES256-DH19')"
+                    },
+                    "encryption": {
+                        "type": "string",
+                        "enum": ["aes-128-cbc", "aes-192-cbc", "aes-256-cbc", "aes-128-gcm", "aes-256-gcm"],
+                        "description": "Encryption algorithm"
+                    },
+                    "dh_group": {
+                        "type": "integer",
+                        "enum": [2, 5, 14, 19, 20],
+                        "description": "Perfect Forward Secrecy DH group"
+                    },
+                    "lifetime": {
+                        "type": "integer",
+                        "description": "IPsec SA lifetime in hours (default: 1)"
+                    }
+                },
+                "required": ["name", "encryption", "dh_group"]
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "get_health_detailed",
+            "description": "Get comprehensive system health metrics including CPU, memory, disk, PostgreSQL, Redis, Celery workers, and Panorama API status.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "include_historical": {
+                        "type": "boolean",
+                        "description": "Include historical metrics (last 24 hours) (default: false)"
+                    }
+                },
+                "required": []
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "restart_celery_workers",
+            "description": "Restart Celery background workers (requires admin permissions). Use when workers are unhealthy or stuck.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "force": {
+                        "type": "boolean",
+                        "description": "Force restart even if workers appear healthy (default: false)"
+                    }
+                },
+                "required": []
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "scan_consolidation_candidates",
+            "description": "Scan for duplicate objects across device groups that can be consolidated (promoted to Shared scope).",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "device_group": {
+                        "type": "string",
+                        "description": "Device group to scan (default: all)"
+                    },
+                    "object_type": {
+                        "type": "string",
+                        "enum": ["address", "address-group", "service", "service-group", "all"],
+                        "description": "Object type to scan (default: all)"
+                    },
+                    "min_risk_level": {
+                        "type": "string",
+                        "enum": ["low", "medium", "high"],
+                        "description": "Minimum risk level to include (default: low)"
+                    }
+                },
+                "required": []
+            }
+        }
+    },
+    {
+        "type": "function",
+        "function": {
+            "name": "promote_object_to_shared",
+            "description": "Promote a local object to the Shared device group, updating all references and deleting local copies.",
+            "parameters": {
+                "type": "object",
+                "properties": {
+                    "object_name": {
+                        "type": "string",
+                        "description": "Object name to promote (e.g., 'Web-Servers-Group')"
+                    },
+                    "object_type": {
+                        "type": "string",
+                        "enum": ["address", "address-group", "service", "service-group"],
+                        "description": "Object type"
+                    },
+                    "dry_run": {
+                        "type": "boolean",
+                        "description": "Preview changes without executing (default: true)"
+                    }
+                },
+                "required": ["object_name", "object_type"]
+            }
+        }
     }
 ]
 

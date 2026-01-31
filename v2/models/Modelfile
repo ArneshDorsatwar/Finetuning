@@ -11,7 +11,8 @@
 #   2. Run: ollama create network-security-expert-v2 -f Modelfile
 #   3. Test: ollama run network-security-expert-v2
 
-FROM ./Llama-3.1-8B-Instruct.Q4_K_M.gguf
+# Update this path to your GGUF file after training
+FROM ./gguf/network-security-expert-v2.Q4_K_M.gguf
 
 # Llama 3.1 Tool Calling Template
 TEMPLATE """{{- if .System }}<|start_header_id|>system<|end_header_id|>

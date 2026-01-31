@@ -74,7 +74,7 @@ def calculate_quality_score(example: Dict) -> Tuple[float, Dict[str, float]]:
     else:
         scores["length"] = 10  # Very long answers may be bloated
 
-    # 2. Technical Depth Score (0-25)
+    # 2. Technical Depth Score (0-30) - INCREASED from 25 for network security domain
     tech_score = 0
 
     # Code blocks (```code```)
@@ -89,27 +89,31 @@ def calculate_quality_score(example: Dict) -> Tuple[float, Dict[str, float]]:
     cli_patterns = len(re.findall(r'(?:show |config |set |get |curl |aws |az |gcloud |kubectl |docker |git )', answer, re.I))
     tech_score += min(cli_patterns * 2, 5)
 
-    scores["technical_depth"] = min(tech_score, 25)
+    # Firewall/network specific commands
+    fw_patterns = len(re.findall(r'(?:iptables|nft|firewall-cmd|ufw|palo|panorama|asa|ios|junos)', answer, re.I))
+    tech_score += min(fw_patterns * 2, 5)
 
-    # 3. Formatting Quality Score (0-15)
+    scores["technical_depth"] = min(tech_score, 30)
+
+    # 3. Formatting Quality Score (0-12) - DECREASED from 15 (less important than content)
     format_score = 0
 
     # Has headers (##, ###, **)
     if re.search(r'(?:^|\n)#{1,3}\s|\*\*[^*]+\*\*', answer):
-        format_score += 5
+        format_score += 4
 
     # Has bullet points or numbered lists
     if re.search(r'(?:^|\n)\s*[-*•]\s|(?:^|\n)\s*\d+[.)]\s', answer):
-        format_score += 5
+        format_score += 4
 
     # Has newlines/paragraphs (well structured)
     newlines = answer.count('\n')
     if newlines >= 3:
-        format_score += 5
+        format_score += 4
     elif newlines >= 1:
         format_score += 2
 
-    scores["formatting"] = min(format_score, 15)
+    scores["formatting"] = min(format_score, 12)
 
     # 4. Question-Answer Relevance Score (0-20)
     relevance_score = 0
@@ -125,23 +129,26 @@ def calculate_quality_score(example: Dict) -> Tuple[float, Dict[str, float]]:
 
     scores["relevance"] = relevance_score
 
-    # 5. Specificity Score (0-10)
+    # 5. Specificity Score (0-15) - INCREASED from 10 (IPs/ports/commands crucial)
     specificity_score = 0
 
     # Contains specific numbers, IPs, ports
     if re.search(r'\b(?:\d{1,3}\.){3}\d{1,3}\b', answer):  # IP addresses
-        specificity_score += 3
+        specificity_score += 4
     if re.search(r'\bport\s*\d+\b', answer, re.I):  # Port numbers
-        specificity_score += 2
-    if re.search(r'\b(?:192\.168|10\.|172\.(?:1[6-9]|2[0-9]|3[01]))', answer):  # Private IPs
-        specificity_score += 2
-    if re.search(r'\b(?:TCP|UDP|HTTP|HTTPS|SSH|SSL|TLS)\b', answer):  # Protocols
         specificity_score += 3
+    if re.search(r'\b(?:192\.168|10\.|172\.(?:1[6-9]|2[0-9]|3[01]))', answer):  # Private IPs
+        specificity_score += 3
+    if re.search(r'\b(?:TCP|UDP|HTTP|HTTPS|SSH|SSL|TLS|ICMP)\b', answer):  # Protocols
+        specificity_score += 3
+    # Firewall-specific terms
+    if re.search(r'\b(?:device.?group|DG-|panorama|security.?rule|NAT)\b', answer, re.I):
+        specificity_score += 2
 
-    scores["specificity"] = min(specificity_score, 10)
+    scores["specificity"] = min(specificity_score, 15)
 
-    # 6. No Filler/Placeholder Penalty (0-10)
-    filler_score = 10
+    # 6. No Filler/Placeholder Penalty (0-3) - DECREASED from 10 (rarely issue with GPT-4o/Claude)
+    filler_score = 3
 
     # Check for placeholder text
     placeholders = [
@@ -155,11 +162,44 @@ def calculate_quality_score(example: Dict) -> Tuple[float, Dict[str, float]]:
     ]
     for pattern in placeholders:
         if re.search(pattern, answer, re.I):
-            filler_score -= 2
+            filler_score -= 1
 
     scores["no_filler"] = max(filler_score, 0)
 
-    # Calculate total
+    # 7. Bonus Criteria (Network Security Domain)
+    bonus_score = 0
+
+    # Security warnings and best practices (+5)
+    security_patterns = [
+        r'\b(?:warning|caution|security|best.?practice|recommendation|avoid|never|always)\b',
+        r'(?:⚠️|🔒|🛡️|⚡)',  # Security emojis
+        r'(?:CRITICAL|WARNING|NOTE|TIP):',
+    ]
+    for pattern in security_patterns:
+        if re.search(pattern, answer, re.I):
+            bonus_score += 5
+            break
+
+    # Multi-vendor support (+3)
+    vendors = [r'\bpalo.?alto\b', r'\bcisco\b', r'\bfortinet\b', r'\baws\b', r'\bazure\b', r'\bgcp\b']
+    vendor_count = sum(1 for v in vendors if re.search(v, answer, re.I))
+    if vendor_count >= 2:
+        bonus_score += 3
+
+    # Troubleshooting steps (+5)
+    troubleshooting_patterns = [
+        r'\b(?:troubleshoot|debug|diagnose|fix|resolve|solution)\b',
+        r'(?:^|\n)\s*\d+[.)]\s.*(?:check|verify|test|validate)',  # Numbered steps
+        r'(?:if.*then|when.*use|first.*then)',  # Conditional troubleshooting
+    ]
+    for pattern in troubleshooting_patterns:
+        if re.search(pattern, answer, re.I):
+            bonus_score += 5
+            break
+
+    scores["bonus"] = bonus_score
+
+    # Calculate total (max 113 with bonuses)
     total = sum(scores.values())
 
     return total, scores

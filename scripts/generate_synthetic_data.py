@@ -2080,6 +2080,755 @@ AVAILABLE TOOLS:
 
 Generate diverse examples across all categories.
 Format as JSON array with "question" and "answer" fields."""
+    },
+
+    # =============================================================================
+    # NEW FIREWEAVE TOPICS - Comprehensive Coverage (10 Topics)
+    # =============================================================================
+
+    "fireweave-template-stacks": {
+        "description": "Template stack hierarchy, override detection, and firewall assignments",
+        "prompt_template": """CRITICAL QUALITY REQUIREMENTS:
+- Minimum 400 characters (150+ words)
+- Include 2+ specific technical examples with REAL values (template names, severity levels, firewall hostnames)
+- Complete code examples (NO "..." or "similar to above")
+- Step-by-step reasoning (explain WHY, not just HOW)
+- Include security warnings and edge cases
+- Add troubleshooting tips
+- Use realistic enterprise scenarios
+
+Generate {count} Q&A pairs about FireWeave template stacks and hierarchy management.
+
+CONTEXT - FireWeave Template Stacks:
+Template stacks are configuration templates applied to Palo Alto firewalls through Panorama. They consist of multiple templates in a priority order, and FireWeave helps manage these hierarchies and detect configuration overrides.
+
+KEY FEATURES:
+1. Template inheritance chain visualization
+2. Priority ordering (templates applied in sequence)
+3. Override detection with severity classification:
+   - CRITICAL: Security-related (admin accounts, auth settings)
+   - WARNING: Network config (interfaces, routing)
+   - INFO: Cosmetic (timezone, hostname)
+4. Firewall assignment tracking
+5. Override resolution workflow
+
+AVAILABLE TOOLS:
+- get_template_stacks() - List all template stacks
+- get_template_stack_hierarchy(name) - Show inheritance chain for a specific stack
+- find_template_overrides(severity, category) - Detect overrides by severity level
+- get_template_stack_assignments(name) - Show which firewalls use this stack
+
+CATEGORIES TO GENERATE (60% TOOL CALLING, 40% CONVERSATIONAL):
+
+**CONVERSATIONAL (40% - 140 examples):**
+1. "What is a template stack in Panorama?"
+2. "How does template inheritance work in FireWeave?"
+3. "Explain template override severity levels"
+4. "What's the difference between critical and warning overrides?"
+5. "Best practices for template stack organization"
+6. "How to troubleshoot template priority conflicts"
+7. "When should I use multiple templates vs single template?"
+8. "What happens when child firewalls override parent templates?"
+
+**TOOL CALLING (60% - 210 examples):**
+Format: <|python_tag|>{{"name": "tool_name", "arguments": {{...}}}}
+
+Single-step examples:
+9. "List all template stacks in our Panorama"
+10. "Show me the inheritance chain for DC-Template-Stack"
+11. "Find all critical severity overrides"
+12. "Which firewalls are using the Datacenter-Template stack?"
+
+Multi-step workflows:
+13. "Find template overrides and analyze their impact"
+14. "Check template stack for PA-FW-01 and show inheritance"
+15. "Audit all template stacks for security overrides"
+
+TOOL CALL FORMAT:
+```json
+<|python_tag|>{{"name": "get_template_stacks", "arguments": {{"include_templates": true}}}}
+```
+
+QUALITY CHECKLIST:
+✓ 400+ characters
+✓ 2+ specific examples (real template names: DC-Template-Stack, Branch-Template, HQ-Primary-Template)
+✓ Complete JSON (no "..." placeholders)
+✓ Explain security implications
+✓ Troubleshooting tips included
+✓ Realistic enterprise scenarios
+
+Format as JSON array: [{{"question": "...", "answer": "..."}}]
+"""
+    },
+
+    "fireweave-device-group-hierarchy": {
+        "description": "Device group tree visualization, inheritance, and rule evaluation order",
+        "prompt_template": """CRITICAL QUALITY REQUIREMENTS:
+- Minimum 400 characters (150+ words)
+- Include 2+ specific technical examples with REAL device group names
+- Complete code examples (NO "..." or "similar to above")
+- Step-by-step reasoning (explain WHY, not just HOW)
+- Include Panorama inheritance concepts
+- Add troubleshooting tips
+- Use realistic enterprise scenarios
+
+Generate {count} Q&A pairs about FireWeave device group hierarchy management.
+
+CONTEXT - Device Group Hierarchy:
+Panorama organizes firewalls into device groups (DGs) in a hierarchical structure. FireWeave visualizes this hierarchy and helps understand rule evaluation order, object inheritance, and effective scopes.
+
+KEY CONCEPTS:
+1. Shared device group: Top-level, objects available to all
+2. Inheritance chain: Child DGs inherit from parents
+3. Local vs inherited objects: Objects defined locally vs inherited from ancestors
+4. Rule evaluation order: Pre-rules (top-down), local rules, post-rules
+5. Effective scope: Which DGs can access which objects
+
+HIERARCHY EXAMPLE:
+```
+Shared (root)
+├── North-America
+│   ├── US-East (inherits from North-America, Shared)
+│   │   └── NYC-DC (inherits from US-East, North-America, Shared)
+│   └── US-West
+└── Europe
+    └── London-DC
+```
+
+AVAILABLE TOOLS:
+- get_device_group_hierarchy() - Show full tree with object counts
+- get_inheritance_chain(device_group) - Show parent chain for a DG
+- get_object_stats(device_group) - Local vs inherited object counts
+- find_common_ancestor(device_groups) - Find scope for shared objects
+
+CATEGORIES TO GENERATE (60% TOOL CALLING, 40% CONVERSATIONAL):
+
+**CONVERSATIONAL (40% - 140 examples):**
+1. "What is device group hierarchy in Panorama?"
+2. "How does object inheritance work across device groups?"
+3. "Explain the Shared device group"
+4. "What's the difference between local and inherited objects?"
+5. "How does rule evaluation order work with multiple device groups?"
+6. "Best practices for organizing device groups"
+7. "Troubleshooting 'object not found' errors"
+8. "When to promote objects to Shared vs keeping local?"
+
+**TOOL CALLING (60% - 210 examples):**
+Single-step examples:
+9. "Show me the device group hierarchy for our Panorama"
+10. "What's the inheritance chain for DG-Production?"
+11. "Show object statistics for DG-DMZ"
+12. "Find common ancestor for DG-Web and DG-DB"
+
+Multi-step workflows:
+13. "Show hierarchy and analyze object distribution"
+14. "Check if DG-QA can access objects from DG-Production"
+15. "Audit device group structure for consolidation opportunities"
+
+QUALITY CHECKLIST:
+✓ 400+ characters
+✓ 2+ specific examples (DG-Production, DG-DMZ, DG-Development, Shared)
+✓ Complete JSON
+✓ Explain inheritance concepts
+✓ Troubleshooting tips
+
+Format as JSON array: [{{"question": "...", "answer": "..."}}]
+"""
+    },
+
+    "fireweave-audit-logs": {
+        "description": "Audit log sync from Panorama, change tracking, and compliance reporting",
+        "prompt_template": """CRITICAL QUALITY REQUIREMENTS:
+- Minimum 400 characters (150+ words)
+- Include 2+ specific examples (usernames, action types, timestamps)
+- Complete code/API examples
+- Explain compliance use cases (SOC2, PCI-DSS)
+- Include retention and storage details
+- Add troubleshooting tips
+- Use realistic scenarios
+
+Generate {count} Q&A pairs about FireWeave audit log management and compliance tracking.
+
+CONTEXT - Audit Log Management:
+FireWeave syncs audit logs from Panorama API (audit, config, system logs) and provides structured before/after diffs for change tracking. This supports compliance audits (SOC2, PCI-DSS) and security investigations.
+
+KEY FEATURES:
+1. Sync from Panorama: Fetch logs via API
+2. Structured before/after diffs: Field-level change tracking
+3. 80-90% storage compression: Gzip compression
+4. 90-day retention (configurable)
+5. Search and filter: By user, action, entity type, timeframe
+6. Compliance reporting: Evidence for audits
+
+LOG TYPES SYNCED:
+- Config logs: Policy changes, object modifications
+- Audit logs: Admin actions, logins, commits
+- System logs: Errors, warnings, performance
+
+AVAILABLE TOOLS:
+- sync_audit_logs(panorama_id) - Trigger log sync from Panorama
+- search_audit_logs(user, action, entity_type, days) - Search logs with filters
+- get_audit_log_diff(id) - View before/after changes for a specific log entry
+- export_audit_report(format, start_date, end_date) - Generate compliance report
+
+CATEGORIES TO GENERATE (60% TOOL CALLING, 40% CONVERSATIONAL):
+
+**CONVERSATIONAL (40% - 120 examples):**
+1. "What audit logs does FireWeave collect?"
+2. "How does audit log sync work?"
+3. "Explain the compression and retention policy"
+4. "How to use audit logs for SOC2 compliance?"
+5. "Best practices for audit log management"
+6. "Troubleshooting missing audit log entries"
+7. "What's the difference between config and audit logs?"
+8. "How to track who made firewall changes?"
+
+**TOOL CALLING (60% - 180 examples):**
+Single-step examples:
+9. "Sync audit logs from Panorama"
+10. "Search for all changes by admin user john.doe in the last 7 days"
+11. "Show me the diff for audit log ID 12345"
+12. "Find all rule deletion actions in December"
+
+Multi-step workflows:
+13. "Sync logs and search for recent policy changes"
+14. "Find who modified the Allow-HTTPS rule and show the diff"
+15. "Generate audit report for compliance review"
+
+QUALITY CHECKLIST:
+✓ 400+ characters
+✓ 2+ specific examples (usernames like john.doe, actions like 'rule-modify')
+✓ Compliance context (SOC2, PCI-DSS)
+✓ Retention/compression details
+✓ Troubleshooting tips
+
+Format as JSON array: [{{"question": "...", "answer": "..."}}]
+"""
+    },
+
+    "fireweave-vpn-automation": {
+        "description": "VPN wizard, template-based deployment, and crypto profile configuration",
+        "prompt_template": """CRITICAL QUALITY REQUIREMENTS:
+- Minimum 400 characters (150+ words)
+- Include 2+ specific crypto examples (encryption algorithms, DH groups)
+- Complete configuration examples
+- Explain IKEv1 vs IKEv2
+- Include security best practices
+- Add troubleshooting tips
+- Use realistic site-to-site scenarios
+
+Generate {count} Q&A pairs about FireWeave VPN automation and configuration.
+
+CONTEXT - VPN Automation:
+FireWeave provides a 7-step wizard for automating site-to-site VPN configuration on Palo Alto firewalls, including tunnel interfaces, crypto profiles (IKE + IPsec), routing, and security policies.
+
+7-STEP VPN WIZARD:
+1. Select VPN type (IKEv1 / IKEv2)
+2. Configure tunnel interface
+3. Enter peer details (IP, ID)
+4. Build crypto profiles (IKE + IPsec)
+5. Generate routes
+6. Create security policies
+7. Review and deploy
+
+CRYPTO PROFILE COMPONENTS:
+- IKE Phase 1: Encryption (AES256), Hash (SHA256), DH Group (14/19/20)
+- IKE Phase 2 (IPsec): Encryption (AES256), DH Group (14/19/20), Lifetime
+
+AVAILABLE TOOLS:
+- get_vpn_templates() - List available VPN templates
+- create_vpn_wizard(type, local_site, remote_site, peer_ip, preshared_key) - Full wizard
+- create_ike_profile(name, encryption, hash, dh_group, lifetime) - IKE Phase 1
+- create_ipsec_profile(name, encryption, dh_group, lifetime) - IKE Phase 2
+- generate_vpn_routes(destination_network, next_hop) - Static route generation
+- create_vpn_security_policy(source_zone, destination_zone, tunnel_interface) - Allow VPN traffic
+
+CATEGORIES TO GENERATE (67% TOOL CALLING, 33% CONVERSATIONAL):
+
+**CONVERSATIONAL (33% - 100 examples):**
+1. "What is the VPN wizard workflow in FireWeave?"
+2. "Explain IKEv1 vs IKEv2"
+3. "What are recommended crypto profiles for site-to-site VPN?"
+4. "Best practices for VPN tunnel security"
+5. "Troubleshooting VPN tunnel down issues"
+6. "What DH groups should I use?"
+7. "How does the VPN wizard create security policies?"
+
+**TOOL CALLING (67% - 200 examples):**
+Single-step examples:
+8. "List available VPN templates"
+9. "Create IKE Phase 1 profile with AES256, SHA256, DH Group 14"
+10. "Generate route for 10.50.0.0/16 via tunnel.100"
+11. "Create IPsec profile with AES256 and DH Group 19"
+
+Multi-step workflows:
+12. "Set up site-to-site VPN between HQ and Branch office"
+13. "Create full VPN config with IKEv2, AES256, SHA256"
+14. "Deploy VPN tunnel with crypto profiles and security policy"
+
+QUALITY CHECKLIST:
+✓ 400+ characters
+✓ 2+ crypto examples (AES256, SHA256, DH Group 14)
+✓ Complete config examples
+✓ IKEv1 vs IKEv2 explanation
+✓ Security best practices
+✓ Troubleshooting tips
+
+Format as JSON array: [{{"question": "...", "answer": "..."}}]
+"""
+    },
+
+    "fireweave-system-health": {
+        "description": "System health monitoring, diagnostics, and quick actions",
+        "prompt_template": """CRITICAL QUALITY REQUIREMENTS:
+- Minimum 400 characters (150+ words)
+- Include 2+ specific metrics (CPU%, memory, disk usage)
+- Complete diagnostic commands
+- Explain health check thresholds
+- Include remediation steps
+- Add troubleshooting workflows
+- Use realistic performance scenarios
+
+Generate {count} Q&A pairs about FireWeave system health monitoring and diagnostics.
+
+CONTEXT - System Health Monitoring:
+FireWeave monitors infrastructure health and Panorama connectivity, providing real-time metrics and quick actions for troubleshooting performance issues.
+
+HEALTH CHECKS:
+- CPU usage: Warning >70%, Critical >90%
+- Memory usage: Warning >75%, Critical >90%
+- Disk usage: Warning >80%, Critical >95%
+- PostgreSQL: Connection pool, query performance, locks
+- Redis: Memory usage, hit rate, evictions
+- Celery workers: Worker status, queue depth, task failures
+- Panorama API: Connectivity, response time, auth status
+
+QUICK ACTIONS:
+- Restart Celery workers
+- Clear Redis cache
+- Export diagnostic bundle
+- Force topology collection
+- Check database connections
+
+AVAILABLE TOOLS:
+- get_health_detailed() - All health metrics with status
+- check_postgres_health() - Database health and performance
+- check_redis_health() - Cache health and memory usage
+- get_celery_worker_status() - Worker status and queue depth
+- restart_celery_workers() - Restart workers (requires admin)
+- clear_redis_cache() - Clear cache (use carefully)
+- export_diagnostics() - Export debug bundle for support
+
+CATEGORIES TO GENERATE (60% TOOL CALLING, 40% CONVERSATIONAL):
+
+**CONVERSATIONAL (40% - 100 examples):**
+1. "What health metrics does FireWeave monitor?"
+2. "Explain the health check thresholds"
+3. "How to troubleshoot high CPU usage?"
+4. "What causes Redis cache evictions?"
+5. "Best practices for system performance"
+6. "Troubleshooting Celery worker issues"
+7. "When should I restart workers?"
+8. "How to interpret PostgreSQL performance metrics?"
+
+**TOOL CALLING (60% - 150 examples):**
+Single-step examples:
+9. "Show me all health metrics"
+10. "Check PostgreSQL database health"
+11. "Get Celery worker status and queue depth"
+12. "Check Redis cache hit rate"
+
+Multi-step workflows:
+13. "Diagnose high memory usage and clear cache if needed"
+14. "Check worker status, restart if unhealthy"
+15. "Full system health audit and export diagnostics"
+
+QUALITY CHECKLIST:
+✓ 400+ characters
+✓ 2+ specific metrics (CPU 85%, memory 4.2GB/8GB, queue depth 1234)
+✓ Complete diagnostic commands
+✓ Explain thresholds
+✓ Remediation steps
+✓ Troubleshooting workflows
+
+Format as JSON array: [{{"question": "...", "answer": "..."}}]
+"""
+    },
+
+    "fireweave-object-consolidation-advanced": {
+        "description": "Advanced object consolidation, risk assessment, and promotion to Shared scope",
+        "prompt_template": """CRITICAL QUALITY REQUIREMENTS:
+- Minimum 400 characters (150+ words)
+- Include 2+ specific examples (object names, device groups, risk levels)
+- Complete workflow examples
+- Explain risk levels and their implications
+- Include rollback procedures
+- Add best practices
+- Use realistic consolidation scenarios
+
+Generate {count} Q&A pairs about FireWeave advanced object consolidation and scope promotion.
+
+CONTEXT - Object Consolidation:
+Object consolidation promotes duplicate local objects to the Shared device group, reducing duplication and simplifying management. FireWeave analyzes risk and tracks all references.
+
+WORKFLOW:
+1. Scan for duplicate objects across device groups
+2. Identify candidates for consolidation
+3. Assess risk level (LOW/MEDIUM/HIGH)
+4. Select objects to promote to "Shared"
+5. Preview reference updates
+6. Execute promotion
+7. Delete local copies
+
+RISK LEVELS:
+- LOW: Object only used in one device group
+- MEDIUM: Object used in multiple device groups
+- HIGH: Object used in active security rules
+
+AVAILABLE TOOLS:
+- scan_consolidation_candidates(device_group) - Find duplicate objects
+- promote_object_to_shared(object_name, object_type) - Promote to Shared
+- preview_consolidation(object_name, target_scope) - Preview impact
+- get_object_references(object_name) - Show all rules using this object
+- rollback_consolidation(consolidation_id) - Undo promotion
+
+CATEGORIES TO GENERATE (63% TOOL CALLING, 37% CONVERSATIONAL):
+
+**CONVERSATIONAL (37% - 150 examples):**
+1. "What is object consolidation in FireWeave?"
+2. "Explain the risk levels for consolidation"
+3. "When should I promote objects to Shared?"
+4. "Best practices for object consolidation"
+5. "How to roll back a consolidation?"
+6. "Troubleshooting consolidation failures"
+7. "What's the difference between consolidation and deduplication?"
+
+**TOOL CALLING (63% - 250 examples):**
+Single-step examples:
+8. "Scan for consolidation candidates in DG-Production"
+9. "Promote Web-Servers-Group to Shared"
+10. "Preview consolidation for DB-Servers object"
+11. "Show all references to Corporate-Network object"
+
+Multi-step workflows:
+12. "Scan, assess risk, and promote safe candidates"
+13. "Find duplicate address groups and consolidate them"
+14. "Audit device groups for consolidation opportunities"
+
+QUALITY CHECKLIST:
+✓ 400+ characters
+✓ 2+ specific examples (Web-Servers-Group, DB-Servers, DG-Production)
+✓ Risk level explanation
+✓ Rollback procedures
+
+Format as JSON array: [{{"question": "...", "answer": "..."}}]
+"""
+    },
+
+    "fireweave-topology-versioning-advanced": {
+        "description": "Advanced topology versioning, SHA256 checksums, diffs, and rollback",
+        "prompt_template": """CRITICAL QUALITY REQUIREMENTS:
+- Minimum 400 characters (150+ words)
+- Include 2+ specific examples (version IDs, checksums, timestamps)
+- Complete diff examples
+- Explain immutability and atomicity
+- Include compliance use cases
+- Add rollback procedures
+- Use realistic versioning scenarios
+
+Generate {count} Q&A pairs about FireWeave advanced topology versioning and rollback.
+
+CONTEXT - Topology Versioning:
+FireWeave maintains immutable snapshots of Panorama configuration with SHA256 checksums, enabling instant rollback and compliance audit trails (SOC2, PCI-DSS ready).
+
+KEY FEATURES:
+1. Immutable snapshots: Each version is frozen with SHA256 checksum
+2. Normalized storage: 13 PostgreSQL tables
+3. 85% storage reduction: Gzip compression
+4. Atomic version switching: Instant rollback
+5. Change audit log: Track who, what, when
+6. Diff comparison: Before/after views
+
+VERSION LIFECYCLE:
+- Collection: Fetch from Panorama
+- Validation: Verify checksum
+- Storage: Normalize and compress
+- Activation: Make active for analysis
+- Archive: Keep historical versions
+
+AVAILABLE TOOLS:
+- get_topology_versions(limit, sort_by) - List all versions
+- get_topology_version(id) - Get specific version details
+- compare_topology_versions(v1, v2) - Show differences
+- activate_topology_version(id) - Rollback to this version
+- get_version_diff(from_version, to_version, entity_type) - Detailed entity diffs
+- export_version_report(version_id, format) - Export for compliance
+
+CATEGORIES TO GENERATE (57% TOOL CALLING, 43% CONVERSATIONAL):
+
+**CONVERSATIONAL (43% - 150 examples):**
+1. "How does topology versioning work in FireWeave?"
+2. "Explain SHA256 checksums and immutability"
+3. "What is atomic version switching?"
+4. "Best practices for version retention"
+5. "How to use versioning for compliance audits?"
+6. "Troubleshooting version activation failures"
+7. "What's stored in each version snapshot?"
+
+**TOOL CALLING (57% - 200 examples):**
+Single-step examples:
+8. "List last 10 topology versions"
+9. "Show details for version 42"
+10. "Compare version 42 and version 45"
+11. "Activate version 40 (rollback)"
+
+Multi-step workflows:
+12. "Compare last two versions and analyze changes"
+13. "Find when Allow-HTTPS rule was modified"
+14. "Generate compliance report for version 50"
+
+QUALITY CHECKLIST:
+✓ 400+ characters
+✓ 2+ specific examples (version IDs, SHA256 hashes)
+✓ Explain immutability
+✓ Compliance context
+✓ Rollback procedures
+
+Format as JSON array: [{{"question": "...", "answer": "..."}}]
+"""
+    },
+
+    "fireweave-jira-integration-advanced": {
+        "description": "Advanced Jira integration, JQL queries, issue parsing, and evidence upload",
+        "prompt_template": """CRITICAL QUALITY REQUIREMENTS:
+- Minimum 400 characters (150+ words)
+- Include 2+ JQL query examples
+- Complete workflow examples
+- Explain issue parsing formats (markdown, CSV, JSON)
+- Include evidence upload procedures
+- Add status transition automation
+- Use realistic ITSM scenarios
+
+Generate {count} Q&A pairs about FireWeave advanced Jira integration and workflow automation.
+
+CONTEXT - Jira Integration:
+FireWeave integrates with Jira for processing firewall change requests, including JQL-based issue fetching, automatic rule parsing from issue descriptions, and evidence upload after deployment.
+
+KEY FEATURES:
+1. JQL-based issue fetching
+2. Automatic rule parsing:
+   - Markdown tables
+   - CSV blocks
+   - JSON blocks
+   - Key-value pairs
+3. Evidence upload after deployment
+4. Issue status transitions
+5. Comment automation
+
+SUPPORTED FORMATS IN ISSUE BODY:
+- Markdown table: | Source | Dest | Port |
+- CSV block: ```10.1.1.1,192.168.1.1,443```
+- JSON: ```{{"source": "10.1.1.1", ...}}```
+- Key-value: Source: 10.1.1.1, Dest: 192.168.1.1
+
+AVAILABLE TOOLS:
+- fetch_jira_issues(jql) - Fetch issues using JQL query
+- parse_jira_issue_rules(issue_key) - Parse rules from issue description
+- deploy_from_jira(issue_key, auto_update_status) - Deploy rules and update issue
+- upload_jira_evidence(issue_key, evidence_type, file_path) - Attach deployment evidence
+- transition_jira_issue(issue_key, status) - Change issue status
+- add_jira_comment(issue_key, comment) - Add comment to issue
+
+CATEGORIES TO GENERATE (63% TOOL CALLING, 37% CONVERSATIONAL):
+
+**CONVERSATIONAL (37% - 130 examples):**
+1. "How does Jira integration work in FireWeave?"
+2. "What JQL queries are commonly used?"
+3. "Explain issue parsing formats"
+4. "Best practices for firewall change requests in Jira"
+5. "Troubleshooting issue parsing failures"
+6. "How to automate evidence upload?"
+7. "What status transitions are supported?"
+
+**TOOL CALLING (63% - 220 examples):**
+JQL examples:
+8. "Fetch all open firewall change requests: project=NETOPS AND status='Open' AND type='Firewall Change'"
+9. "Find my assigned firewall tickets"
+
+Single-step examples:
+10. "Parse rules from NETOPS-1234"
+11. "Deploy rules from NETOPS-1234 and update status"
+12. "Upload deployment evidence to NETOPS-1234"
+
+Multi-step workflows:
+13. "Fetch open tickets, parse rules, and preview deployment"
+14. "Deploy from Jira, upload evidence, transition to Done"
+15. "Batch process all pending firewall change requests"
+
+QUALITY CHECKLIST:
+✓ 400+ characters
+✓ 2+ JQL examples
+✓ Parse format examples
+✓ Evidence upload workflow
+✓ Troubleshooting tips
+
+Format as JSON array: [{{"question": "...", "answer": "..."}}]
+"""
+    },
+
+    "fireweave-ai-chat-workflows": {
+        "description": "Advanced multi-step AI workflows with conditional logic and error recovery",
+        "prompt_template": """CRITICAL QUALITY REQUIREMENTS:
+- Minimum 400 characters (150+ words)
+- Include 2+ multi-step workflow examples
+- Show conditional logic (if blocked, then...)
+- Include error handling
+- Explain tool chaining
+- Add workflow optimization tips
+- Use realistic enterprise scenarios
+
+Generate {count} Q&A pairs about FireWeave advanced AI chat workflows and multi-step automation.
+
+CONTEXT - AI Chat Workflows:
+FireWeave AI chat orchestrator can execute complex multi-step workflows with conditional logic, tool chaining, and error recovery. This enables sophisticated automation like "audit compliance and auto-fix issues."
+
+MULTI-STEP WORKFLOW PATTERNS:
+
+1. AUDIT → REMEDIATION:
+   "Run PCI-DSS audit and fix logging issues"
+   → [compliance_scan(framework="pci-dss"), mass_edit(filters={{log_end: false}}, actions={{set_log_end: true}})]
+
+2. CHECK → CREATE:
+   "Check traffic from web to database, if blocked create rule"
+   → [check_traffic_flow(...), if blocked: create_rule(...)]
+
+3. ANALYZE → CLEANUP → VERIFY:
+   "Find shadowed rules, disable them, verify no impact"
+   → [shadowed_rules_check(...), mass_edit(preview=true), mass_edit(preview=false), check_traffic_flow(...)]
+
+4. INCIDENT RESPONSE:
+   "Block malicious IP immediately across all firewalls"
+   → [create_rule(action="deny"), batch_deploy(device_group="Shared", placement="top")]
+
+AVAILABLE WORKFLOW TOOLS:
+All FireWeave tools can be chained together with conditional logic.
+
+CATEGORIES TO GENERATE (75% TOOL CALLING, 25% CONVERSATIONAL):
+
+**CONVERSATIONAL (25% - 100 examples):**
+1. "What are multi-step workflows in FireWeave?"
+2. "Explain conditional logic in workflows"
+3. "How does error recovery work?"
+4. "Best practices for workflow design"
+5. "Troubleshooting workflow failures"
+6. "When to use multi-step vs single-step?"
+
+**TOOL CALLING (75% - 300 examples):**
+Multi-step examples:
+7. "Run PCI-DSS audit and auto-fix logging"
+8. "Check traffic, if blocked create rule"
+9. "Find unused rules, preview disable, then apply"
+10. "Block malicious IP across all firewalls"
+11. "Audit compliance, find violations, generate report"
+12. "Check NAT translation, if wrong update rule"
+13. "Scan for duplicates, consolidate objects"
+14. "Find shadowed rules and merge them"
+15. "Collect topology, run analysis, export results"
+
+QUALITY CHECKLIST:
+✓ 400+ characters
+✓ 2+ multi-step workflows
+✓ Conditional logic (if/then)
+✓ Error handling
+✓ Workflow optimization
+✓ Realistic scenarios
+
+Format as JSON array: [{{"question": "...", "answer": "..."}}]
+"""
+    },
+
+    "fireweave-cloud-integration-advanced": {
+        "description": "Advanced cloud integration with AWS, Azure, GCP topology and security analysis",
+        "prompt_template": """CRITICAL QUALITY REQUIREMENTS:
+- Minimum 400 characters (150+ words)
+- Include 2+ cloud-specific examples (VPC endpoints, NSGs, Cloud Armor)
+- Complete cloud config examples
+- Explain multi-cloud integration
+- Include internet exposure detection
+- Add security best practices
+- Use realistic cloud scenarios
+
+Generate {count} Q&A pairs about FireWeave advanced cloud integration and security analysis.
+
+CONTEXT - Cloud Integration:
+FireWeave discovers and visualizes cloud network topology alongside on-prem firewalls, supporting AWS, Azure, and GCP. It analyzes cloud security posture and detects internet-exposed assets.
+
+AWS FEATURES:
+- VPC, subnet, route table discovery
+- Security Groups and Network ACLs
+- EC2 instances, ENIs, Elastic IPs
+- VPC endpoints and Transit Gateway
+- Peering connections
+- Internet exposure analysis
+
+AZURE FEATURES:
+- VNets, subnets, NSGs
+- Virtual machines, NICs
+- Load balancers, application gateways
+- Virtual WAN, ExpressRoute
+- Internet exposure analysis
+
+GCP FEATURES:
+- VPCs, subnets, firewall rules
+- Routes, VPN tunnels, Cloud Routers
+- Cloud Armor policies
+- NAT gateways
+- Internet exposure analysis
+
+AVAILABLE TOOLS:
+- collect_aws_topology(region, account_id) - Collect AWS resources
+- collect_azure_topology(subscription_id, resource_group) - Collect Azure resources
+- collect_gcp_topology(project_id) - Collect GCP resources
+- find_internet_exposed_assets(cloud, asset_type) - Find public-facing resources
+- analyze_aws_security_groups(vpc_id) - Analyze SG rules
+- analyze_azure_nsgs(resource_group) - Analyze NSG rules
+- analyze_gcp_firewall_rules(project_id) - Analyze firewall rules
+- compare_cloud_security_posture(clouds) - Multi-cloud comparison
+
+CATEGORIES TO GENERATE (70% TOOL CALLING, 30% CONVERSATIONAL):
+
+**CONVERSATIONAL (30% - 120 examples):**
+1. "How does FireWeave integrate with AWS?"
+2. "Explain Azure NSG analysis"
+3. "What GCP resources does FireWeave discover?"
+4. "Best practices for multi-cloud security"
+5. "Troubleshooting cloud connector issues"
+6. "How to detect internet-exposed assets?"
+7. "What's the difference between AWS SGs and Azure NSGs?"
+
+**TOOL CALLING (70% - 280 examples):**
+Single-step examples:
+8. "Collect AWS topology for us-east-1"
+9. "Find all internet-exposed EC2 instances"
+10. "Analyze Security Groups for vpc-12345"
+11. "Collect Azure topology for resource group RG-Production"
+12. "Analyze NSGs for RG-Web"
+
+Multi-step workflows:
+13. "Collect all cloud topologies and find internet exposure"
+14. "Compare AWS and Azure security posture"
+15. "Audit GCP firewall rules for compliance"
+16. "Find overly permissive cloud security groups"
+
+QUALITY CHECKLIST:
+✓ 400+ characters
+✓ 2+ cloud examples (VPC vpc-12345, NSG nsg-web-01, GCP project-123)
+✓ Multi-cloud scenarios
+✓ Internet exposure detection
+✓ Security best practices
+
+Format as JSON array: [{{"question": "...", "answer": "..."}}]
+"""
     }
 }
 

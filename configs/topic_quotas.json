@@ -1,0 +1,359 @@
+{
+  "_comment": "Topic quotas for maintaining 60/40 tool calling to conversation ratio",
+  "_targets": {
+    "total_dataset": 12000,
+    "fireweave_total": 5400,
+    "network_security_total": 4200,
+    "cloud_security_total": 1440,
+    "other_total": 960,
+    "overall_tool_ratio": 0.60,
+    "overall_conv_ratio": 0.40
+  },
+
+  "fireweave": {
+    "_category_target": 5400,
+    "_category_tool": 3240,
+    "_category_conv": 2160,
+
+    "fireweave-template-stacks": {
+      "total": 350,
+      "tool": 210,
+      "conv": 140,
+      "provider": "gpt-4o",
+      "priority": 1,
+      "current_total": 0,
+      "current_tool": 0,
+      "current_conv": 0
+    },
+    "fireweave-device-group-hierarchy": {
+      "total": 350,
+      "tool": 210,
+      "conv": 140,
+      "provider": "gpt-4o",
+      "priority": 1,
+      "current_total": 0,
+      "current_tool": 0,
+      "current_conv": 0
+    },
+    "fireweave-audit-logs": {
+      "total": 300,
+      "tool": 180,
+      "conv": 120,
+      "provider": "claude-opus",
+      "priority": 1,
+      "current_total": 0,
+      "current_tool": 0,
+      "current_conv": 0
+    },
+    "fireweave-vpn-automation": {
+      "total": 300,
+      "tool": 200,
+      "conv": 100,
+      "provider": "gpt-4o",
+      "priority": 1,
+      "current_total": 0,
+      "current_tool": 0,
+      "current_conv": 0
+    },
+    "fireweave-system-health": {
+      "total": 250,
+      "tool": 150,
+      "conv": 100,
+      "provider": "claude-opus",
+      "priority": 1,
+      "current_total": 0,
+      "current_tool": 0,
+      "current_conv": 0
+    },
+    "fireweave-object-consolidation-advanced": {
+      "total": 400,
+      "tool": 250,
+      "conv": 150,
+      "provider": "gpt-4o",
+      "priority": 2,
+      "current_total": 0,
+      "current_tool": 0,
+      "current_conv": 0
+    },
+    "fireweave-topology-versioning-advanced": {
+      "total": 350,
+      "tool": 200,
+      "conv": 150,
+      "provider": "claude-opus",
+      "priority": 2,
+      "current_total": 0,
+      "current_tool": 0,
+      "current_conv": 0
+    },
+    "fireweave-jira-integration-advanced": {
+      "total": 350,
+      "tool": 220,
+      "conv": 130,
+      "provider": "gpt-4o",
+      "priority": 2,
+      "current_total": 0,
+      "current_tool": 0,
+      "current_conv": 0
+    },
+    "fireweave-ai-chat-workflows": {
+      "total": 400,
+      "tool": 300,
+      "conv": 100,
+      "provider": "gpt-4o",
+      "priority": 2,
+      "current_total": 0,
+      "current_tool": 0,
+      "current_conv": 0
+    },
+    "fireweave-cloud-integration-advanced": {
+      "total": 400,
+      "tool": 280,
+      "conv": 120,
+      "provider": "mixed",
+      "gpt4o_ratio": 0.60,
+      "claude_ratio": 0.40,
+      "priority": 2,
+      "current_total": 0,
+      "current_tool": 0,
+      "current_conv": 0
+    },
+    "fireweave-features": {
+      "total": 650,
+      "tool": 390,
+      "conv": 260,
+      "provider": "existing",
+      "notes": "Expand from ~150 to 650, +500 new",
+      "priority": 3,
+      "current_total": 150,
+      "current_tool": 50,
+      "current_conv": 100
+    },
+    "fireweave-function-calling": {
+      "total": 773,
+      "tool": 618,
+      "conv": 155,
+      "provider": "gpt-4o",
+      "notes": "Expand from ~173 to 773, +600 new",
+      "priority": 3,
+      "current_total": 173,
+      "current_tool": 140,
+      "current_conv": 33
+    },
+    "fireweave-troubleshooting": {
+      "total": 470,
+      "tool": 94,
+      "conv": 376,
+      "provider": "claude-opus",
+      "notes": "Expand from ~70 to 470, +400 new",
+      "priority": 3,
+      "current_total": 70,
+      "current_tool": 14,
+      "current_conv": 56
+    },
+    "fireweave-api": {
+      "total": 425,
+      "tool": 128,
+      "conv": 297,
+      "provider": "gpt-4o",
+      "notes": "Expand from ~75 to 425, +350 new",
+      "priority": 3,
+      "current_total": 75,
+      "current_tool": 22,
+      "current_conv": 53
+    }
+  },
+
+  "network_security": {
+    "_category_target": 4200,
+    "_category_tool": 1280,
+    "_category_conv": 2920,
+
+    "palo-alto-configuration": {
+      "total": 900,
+      "tool": 360,
+      "conv": 540,
+      "provider": "mixed",
+      "gpt4o_ratio": 0.50,
+      "claude_ratio": 0.50,
+      "priority": 1,
+      "current_total": 0,
+      "current_tool": 0,
+      "current_conv": 0
+    },
+    "cisco-asa-firewall": {
+      "total": 800,
+      "tool": 320,
+      "conv": 480,
+      "provider": "gpt-4o",
+      "notes": "Regenerate with enhanced prompts (current 68% pass rate)",
+      "priority": 1,
+      "current_total": 0,
+      "current_tool": 0,
+      "current_conv": 0
+    },
+    "network-troubleshooting": {
+      "total": 600,
+      "tool": 240,
+      "conv": 360,
+      "provider": "claude-opus",
+      "priority": 1,
+      "current_total": 0,
+      "current_tool": 0,
+      "current_conv": 0
+    },
+    "ids-ips-detection": {
+      "total": 500,
+      "tool": 200,
+      "conv": 300,
+      "provider": "gpt-4o",
+      "priority": 2,
+      "current_total": 0,
+      "current_tool": 0,
+      "current_conv": 0
+    },
+    "vpn-configuration": {
+      "total": 400,
+      "tool": 160,
+      "conv": 240,
+      "provider": "gpt-4o",
+      "notes": "General VPN, not FireWeave-specific",
+      "priority": 2,
+      "current_total": 0,
+      "current_tool": 0,
+      "current_conv": 0
+    },
+    "routing-switching": {
+      "total": 500,
+      "tool": 0,
+      "conv": 500,
+      "provider": "claude-opus",
+      "notes": "Conceptual/fundamentals",
+      "priority": 3,
+      "current_total": 0,
+      "current_tool": 0,
+      "current_conv": 0
+    },
+    "osi-model": {
+      "total": 300,
+      "tool": 0,
+      "conv": 300,
+      "provider": "claude-opus",
+      "notes": "Fundamentals",
+      "priority": 3,
+      "current_total": 0,
+      "current_tool": 0,
+      "current_conv": 0
+    },
+    "network-security-fundamentals": {
+      "total": 200,
+      "tool": 0,
+      "conv": 200,
+      "provider": "claude-opus",
+      "priority": 3,
+      "current_total": 0,
+      "current_tool": 0,
+      "current_conv": 0
+    }
+  },
+
+  "cloud_security": {
+    "_category_target": 1440,
+    "_category_tool": 860,
+    "_category_conv": 580,
+
+    "aws-security": {
+      "total": 600,
+      "tool": 360,
+      "conv": 240,
+      "provider": "mixed",
+      "gpt4o_ratio": 0.60,
+      "claude_ratio": 0.40,
+      "priority": 1,
+      "current_total": 0,
+      "current_tool": 0,
+      "current_conv": 0
+    },
+    "azure-security": {
+      "total": 500,
+      "tool": 300,
+      "conv": 200,
+      "provider": "mixed",
+      "gpt4o_ratio": 0.60,
+      "claude_ratio": 0.40,
+      "priority": 1,
+      "current_total": 0,
+      "current_tool": 0,
+      "current_conv": 0
+    },
+    "gcp-security": {
+      "total": 340,
+      "tool": 200,
+      "conv": 140,
+      "provider": "mixed",
+      "gpt4o_ratio": 0.60,
+      "claude_ratio": 0.40,
+      "priority": 1,
+      "current_total": 0,
+      "current_tool": 0,
+      "current_conv": 0
+    }
+  },
+
+  "other": {
+    "_category_target": 960,
+    "_category_tool": 300,
+    "_category_conv": 660,
+
+    "cissp-domains": {
+      "total": 300,
+      "tool": 0,
+      "conv": 300,
+      "provider": "claude-opus",
+      "notes": "Keep existing (86% pass rate)",
+      "priority": 3,
+      "current_total": 161,
+      "current_tool": 0,
+      "current_conv": 161
+    },
+    "compliance-frameworks": {
+      "total": 250,
+      "tool": 150,
+      "conv": 100,
+      "provider": "gpt-4o",
+      "priority": 2,
+      "current_total": 0,
+      "current_tool": 0,
+      "current_conv": 0
+    },
+    "network-automation": {
+      "total": 200,
+      "tool": 120,
+      "conv": 80,
+      "provider": "gpt-4o",
+      "priority": 2,
+      "current_total": 0,
+      "current_tool": 0,
+      "current_conv": 0
+    },
+    "zero-trust-architecture": {
+      "total": 150,
+      "tool": 0,
+      "conv": 150,
+      "provider": "claude-opus",
+      "priority": 2,
+      "current_total": 0,
+      "current_tool": 0,
+      "current_conv": 0
+    },
+    "threat-hunting": {
+      "total": 60,
+      "tool": 30,
+      "conv": 30,
+      "provider": "claude-opus",
+      "priority": 2,
+      "current_total": 0,
+      "current_tool": 0,
+      "current_conv": 0
+    }
+  }
+}
