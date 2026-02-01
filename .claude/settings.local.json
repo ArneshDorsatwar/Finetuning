@@ -10,7 +10,11 @@
       "Bash(findstr:*)",
       "Bash(timeout 30 tail:*)",
       "Bash(timeout /t 30 /nobreak)",
-      "Bash(timeout 60 tail:*)"
+      "Bash(timeout 60 tail:*)",
+      "Bash(nvidia-smi:*)",
+      "Bash(pkill:*)",
+      "Read(//tmp/pip-install-d8gvts3_/flash-attn_7f6d038603954893987d67a08bddc2e1/csrc/flash_attn/src/**)",
+      "Read(//tmp/pip-install-d8gvts3_/flash-attn_7f6d038603954893987d67a08bddc2e1/build/temp.linux-x86_64-cpython-312/csrc/flash_attn/src/**)"
     ]
   }
 }
