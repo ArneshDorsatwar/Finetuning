@@ -4,14 +4,12 @@
 cd /home/adorsatwar/Finetuning/Finetuning
 source venv/bin/activate
 
-# Training with all optimizations
-nohup python scripts/train_local.py \
-    --data-path v2/data/processed/training_data_final.json \
-    --batch-size 4 \
-    --gradient-accumulation 4 \
-    --packing \
+# Training with new script + pre-formatted data
+nohup python scripts/train.py \
+    --dataset data/processed/combined_train_formatted.json \
+    --batch-size 2 \
+    --grad-accum 4 \
     --epochs 3 \
-    --save-gguf \
     > training.log 2>&1 &
 
 echo "Training started in background!"

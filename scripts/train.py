@@ -24,6 +24,15 @@ from pathlib import Path
 os.environ["TRITON_CACHE_MANAGER"] = "unsloth.triton_cache:TritonCacheManager"
 os.environ["CUDA_LAUNCH_BLOCKING"] = "0"
 
+# Fix torchao 0.15.0 + PyTorch 2.5.x compatibility:
+# torchao expects torch.int1/int2/... dtypes that only exist in newer PyTorch.
+# We patch them as None so the import doesn't crash. QLoRA uses bitsandbytes
+# for quantization so torchao dtypes are never actually used.
+import torch as _torch
+for _attr in ("int1", "int2", "int3", "int4", "int5", "int6", "int7"):
+    if not hasattr(_torch, _attr):
+        setattr(_torch, _attr, None)
+
 # Clear stale Triton cache
 triton_cache = Path.home() / ".triton" / "cache"
 if triton_cache.exists():
