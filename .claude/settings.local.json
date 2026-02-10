@@ -22,7 +22,8 @@
       "WebFetch(domain:github.com)",
       "Bash(git add:*)",
       "Bash(git commit -m \"$\\(cat <<''EOF''\nfix: patch torchao/PyTorch compatibility and update run_training.sh\n\nAdds monkey-patch for missing torch.int1-int7 dtypes that torchao 0.15.0\nexpects but PyTorch 2.5.x doesn''t have. Updates run_training.sh to use\nthe new train.py script with pre-formatted dataset.\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nfix: remove unsloth.triton_cache reference and Triton cache clearing\n\nThe TRITON_CACHE_MANAGER env var pointed to unsloth.triton_cache which\ndoesn''t exist in unsloth 2026.1.4, causing ModuleNotFoundError when\nTriton tried to compile kernels.\n\nCo-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>\nEOF\n\\)\")"
     ]
   }
 }
