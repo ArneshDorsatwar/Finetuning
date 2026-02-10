@@ -14,14 +14,11 @@ Usage:
 import os
 import sys
 import json
-import shutil
 import argparse
-from pathlib import Path
 
 # ---------------------------------------------------------------------------
 # 0. Environment setup (must happen before torch/unsloth imports)
 # ---------------------------------------------------------------------------
-os.environ["TRITON_CACHE_MANAGER"] = "unsloth.triton_cache:TritonCacheManager"
 os.environ["CUDA_LAUNCH_BLOCKING"] = "0"
 
 # Fix torchao 0.15.0 + PyTorch 2.5.x compatibility:
@@ -32,12 +29,6 @@ import torch as _torch
 for _attr in ("int1", "int2", "int3", "int4", "int5", "int6", "int7"):
     if not hasattr(_torch, _attr):
         setattr(_torch, _attr, None)
-
-# Clear stale Triton cache
-triton_cache = Path.home() / ".triton" / "cache"
-if triton_cache.exists():
-    shutil.rmtree(triton_cache, ignore_errors=True)
-    print("Cleared stale Triton cache")
 
 
 def parse_args():
@@ -249,10 +240,6 @@ def train(model, tokenizer, dataset, args):
         neftune_noise_alpha=5.0,
         args=training_args,
     )
-
-    # Clear Triton cache again right before training
-    if triton_cache.exists():
-        shutil.rmtree(triton_cache, ignore_errors=True)
 
     print(f"\n  Starting training on {len(dataset)} examples...")
     print("  " + "-" * 50)
