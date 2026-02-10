@@ -51,10 +51,12 @@ wandb/
 data/raw/*.json
 data/raw/*.jsonl
 data/raw/*.csv
-data/processed/*.json
-data/processed/*.jsonl
 data/synthetic/*.json
 data/synthetic/*.jsonl
+
+# Keep processed training data
+# data/processed/*.json  -- UN-IGNORED: needed on training server
+# data/processed/*.jsonl
 
 # Keep example data and documentation
 !data/README.md
