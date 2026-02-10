@@ -14,7 +14,12 @@
       "Bash(nvidia-smi:*)",
       "Bash(pkill:*)",
       "Read(//tmp/pip-install-d8gvts3_/flash-attn_7f6d038603954893987d67a08bddc2e1/csrc/flash_attn/src/**)",
-      "Read(//tmp/pip-install-d8gvts3_/flash-attn_7f6d038603954893987d67a08bddc2e1/build/temp.linux-x86_64-cpython-312/csrc/flash_attn/src/**)"
+      "Read(//tmp/pip-install-d8gvts3_/flash-attn_7f6d038603954893987d67a08bddc2e1/build/temp.linux-x86_64-cpython-312/csrc/flash_attn/src/**)",
+      "Bash(del c:UsersdorsaFinetuningscriptscheck_antipatterns.py)",
+      "WebFetch(domain:block.github.io)",
+      "WebFetch(domain:techcommunity.microsoft.com)",
+      "WebFetch(domain:arxiv.org)",
+      "WebFetch(domain:github.com)"
     ]
   }
 }
